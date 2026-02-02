@@ -1,0 +1,30 @@
+.product-gallery {
+    display: flex;
+    gap: 12px;
+  }
+  
+.thumbs-swiper {
+    width: 80px;
+    height: 400px;
+}
+  
+.main-swiper {
+    width: 400px;
+}
+
+.thumbs-swiper .swiper-slide {
+    border: 1px solid #e5e7eb; 
+    border-radius: 6px;
+    padding: 2px;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+  }
+  
+  .thumbs-swiper .swiper-slide-thumb-active {
+    border: 2px solid #ff6600;
+  }
+  
+  .thumbs-swiper img {
+    width: 100%;
+    border-radius: 4px;
+  }

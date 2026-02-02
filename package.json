@@ -1,0 +1,56 @@
+{
+  "name": "shopapp",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.1.0",
+    "@reduxjs/toolkit": "^2.11.2",
+    "@tanstack/react-query": "^5.90.20",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@vitejs/plugin-react-swc": "^4.2.2",
+    "autoprefixer": "^10.4.24",
+    "axios": "^1.13.4",
+    "bootstrap": "^5.3.8",
+    "font-awesome": "^4.7.0",
+    "react": "^19.2.4",
+    "react-bootstrap": "^2.10.10",
+    "react-dom": "^19.2.4",
+    "react-fast-marquee": "^1.6.5",
+    "react-hot-toast": "^2.6.0",
+    "react-loading-skeleton": "^3.5.0",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.13.0",
+    "redux": "^5.0.1",
+    "sweetalert2": "^11.26.17",
+    "swiper": "^12.1.0",
+    "vite": "^7.3.1",
+    "web-vitals": "^5.1.0"
+  },
+  "scripts": {
+    "update": "npm-check-updates",
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
