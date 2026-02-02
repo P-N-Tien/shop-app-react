@@ -9,10 +9,12 @@ import {
 import { clearCard } from "../redux/action";
 import { localStorageUtils } from "../utils/localStorageUtils";
 import { usePaymentListener } from "../hooks/usePaymentListener";
+import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
   const SHIPPING_FEE = 30;
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   usePaymentListener();
   const cartItems = useSelector((state) => state.cartReducer);
