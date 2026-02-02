@@ -1,12 +1,20 @@
-import apiClient from "@/configs/api";
-import { useMutation } from "@tanstack/react-query";
+import { getApi } from "@/configs/api";
+import { useQuery } from "@tanstack/react-query";
 
-export const useValidateVNPay = () => {
-  return useMutation({
-    mutationFn: (payload) => {
-      return apiClient.get(`/api/v1/vnpay/validate`, { params: payload });
+export const useValidateVNPay = (paramsObj, options = {}) => {
+  return useQuery({
+    queryKey: ["vnpay-validation", paramsObj],
+    queryFn: async () => {
+      const response = await getApi(`/api/v1/vnpay/validate`, paramsObj);
+
+      if (response?.paymentStatus === "PENDING") {
+        throw new Error("PAYMENT_PENDING");
+      }
+
+      return response;
     },
-    onSuccess: () => {},
-    onError: () => {},
+    refetchOnWindowFocus: false,
+    enabled: !!paramsObj,
+    ...options,
   });
 };

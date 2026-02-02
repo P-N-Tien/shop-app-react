@@ -5,61 +5,40 @@ import NavigationBar from "../Navbar/Navbar";
 
 const VNPayReturn = () => {
   const location = useLocation();
-
   const queryParams = new URLSearchParams(location.search);
   const paramsObj = Object.fromEntries(queryParams.entries());
-  const channel = new BroadcastChannel("vnpay_payment_channel");
 
-  const { mutate: validateVNPayAsync, isPending } = useValidateVNPay();
+  const { data, isPending } = useValidateVNPay(paramsObj, {
+    retry: 5,
+    retryDelay: 2000,
+  });
+
   const [result, setResult] = useState({ status: "processing", message: "" });
-  const [retryCount, setRetryCount] = useState(0);
-  const MAX_RETRIES = 5;
-
+  console.log("data", data);
   useEffect(() => {
-    const handleValidation = () => {
-      try {
-        const data = validateVNPayAsync(paramsObj);
+    if (data && data.paymentStatus !== "PENDING") {
+      const channel = new BroadcastChannel("vnpay_payment_channel");
 
-        if (!data.success) {
-          // Wrong Signature: Stop and notify now
-          setResult({ status: "FAILED", message: data.message });
-          return;
-        }
+      setResult({
+        status: data.paymentStatus,
+        message: data.message,
+      });
 
-        // Waiting result from VNP IPN
-        if (data.paymentStatus === "PENDING") {
-          if (retryCount < MAX_RETRIES) {
-            setTimeout(() => setRetryCount((prev) => prev + 1), 2000);
-          } else {
-            setResult({
-              status: "FAILED",
-              message: "Timeout: Confirmation taking too long.",
-            });
-          }
-        }
-        // Received the final result (SUCCESS or FAILED from DB)
-        else {
-          setResult({
-            status: data.paymentStatus,
-            message: data.message,
-          });
-          finishSession();
-        }
-      } catch (error) {
-        setResult({ status: "FAILED", message: "System error occurred" });
-      }
-    };
+      channel.postMessage({
+        status: "SUCCESS",
+        message: data?.message,
+        orderId: queryParams.get("vnp_TxnRef"),
+      });
 
-    // Close tab
-    const finishSession = () => {
-      setTimeout(() => {
+      // Finish Session
+      const timer = setTimeout(() => {
         channel.close();
         window.close();
-      }, 2500); // Increased to 2.5s so users have time to read the notice
-    };
+      }, 2500);
 
-    handleValidation();
-  }, [retryCount]);
+      return () => clearTimeout(timer);
+    }
+  }, [data]);
 
   const renderContent = () => {
     if (isPending || result.status === "processing") {

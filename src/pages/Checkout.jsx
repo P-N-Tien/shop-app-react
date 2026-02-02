@@ -85,11 +85,14 @@ const Checkout = () => {
       onSuccess: (data) => {
         if (paymentMethod === "COD") {
           // 1. Popup notify
+
           showSuccessAlert(
             "Order Placed!",
             "Thank you for your purchase. Your order is being processed.",
-            "Track My Order"
-          );
+            "Go to Home"
+          ).then(() => {
+            navigate("/");
+          });
 
           // 2. Remove cart
           dispatch(clearCard());
