@@ -1,139 +1,198 @@
 import React, { useMemo } from "react";
-import Skeleton from "react-loading-skeleton";
 import { Link, useSearchParams } from "react-router-dom";
 import Marquee from "react-fast-marquee";
 import { useDispatch } from "react-redux";
 import { addCart } from "../redux/action";
-
 import { Navbar } from "../components";
 import { useProductByName, useProducts } from "../hooks/useProducts";
 import ImageReview from "../components/ImagePreview/ImageReview";
+import Skeleton from "react-loading-skeleton";
 
-const ProductSkeleton = () => (
-  <div className="container my-5 py-2">
-    <div className="row">
-      <div className="col-md-6">
-        <Skeleton height={400} />
-      </div>
-      <div className="col-md-6">
-        <Skeleton height={30} width={250} />
-        <Skeleton height={90} />
-        <Skeleton height={40} width={120} />
-        <Skeleton height={120} />
+const ProductSkeleton = () => {
+  return (
+    <div className="container my-5 py-2">
+      <div className="row">
+        <div className="col-md-6">
+          <Skeleton height={400} />
+        </div>
+        <div className="col-md-6">
+          <Skeleton height={30} width={250} />
+          <Skeleton height={90} />
+          <Skeleton height={40} width={120} />
+          <Skeleton height={120} />
+        </div>
       </div>
     </div>
-  </div>
-);
-
-const SimilarSkeleton = () => (
-  <div className="d-flex my-4">
-    {Array.from({ length: 4 }).map((_, i) => (
-      <div key={i} className="mx-4">
-        <Skeleton height={400} width={250} />
-      </div>
-    ))}
-  </div>
-);
+  );
+};
 
 const Product = () => {
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const productName = searchParams.get("name");
-  const imageUrl = import.meta.env.VITE_URL_IMAGES;
 
   const { data: product, isLoading } = useProductByName(productName);
   const { data: similarProducts, isLoading: loadingSimilar } =
     useProducts(null);
 
-  const images = useMemo(
-    () => product?.images?.map((img) => `${imageUrl}/${img?.imageUrl}`) || [],
-    [product, imageUrl]
-  );
-
   const handleAddToCart = (item) => dispatch(addCart(item));
 
+  const SimilarSkeleton = () => {
+    return (
+      <div className="d-flex my-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="mx-4">
+            <Skeleton height={400} width={250} />
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   return (
-    <>
+    <div className="bg-light min-vh-100">
       <Navbar />
 
-      <div className="container">
+      <div className="container py-5">
         {isLoading || !product ? (
           <ProductSkeleton />
         ) : (
-          <div className="container my-5 py-2">
-            <div className="row">
-              <div className="col-md-7 col-sm-12">
-                <ImageReview images={images} />
+          <div className="row g-5">
+            {/* Left: Image Gallery */}
+            <div className="col-md-7">
+              <div className="bg-white rounded-4 overflow-hidden shadow-sm p-3">
+                <ImageReview images={product?.images || []} />
               </div>
+            </div>
 
-              <div className="col-md-5 py-4">
-                <h4 className="text-uppercase text-muted">
-                  {product.category}
-                </h4>
-                <h1 className="display-6">{product.name}</h1>
+            {/* Right: Product Info */}
+            <div className="col-md-5">
+              <div className="sticky-top" style={{ top: "100px", zIndex: 1 }}>
+                <nav aria-label="breadcrumb" className="mb-3">
+                  <ol className="breadcrumb text-uppercase fw-bold small">
+                    <li className="breadcrumb-item">
+                      <Link to="/" className="text-decoration-none text-muted">
+                        Home
+                      </Link>
+                    </li>
+                    <li className="breadcrumb-item active text-primary">
+                      {product.category}
+                    </li>
+                  </ol>
+                </nav>
 
-                <p className="text-warning">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <i key={i} className="fa fa-star" />
-                  ))}
+                <h1 className="display-5 fw-bold mb-2 text-dark">
+                  {product.name}
+                </h1>
+
+                <div className="d-flex align-items-center mb-4">
+                  <div className="text-warning me-2">
+                    {[...Array(5)].map((_, i) => (
+                      <i key={i} className="fa fa-star" aria-hidden="true"></i>
+                    ))}
+                  </div>
+                  <span className="text-muted small">(150+ Reviews)</span>
+                </div>
+
+                <div className="d-flex align-items-baseline mb-4">
+                  <h2 className="fw-bold text-primary mb-0">
+                    ${product.price}
+                  </h2>
+                  <span className="text-decoration-line-through text-muted ms-3 fs-5">
+                    ${(product.price * 1.2).toFixed(2)}
+                  </span>
+                </div>
+
+                <p
+                  className="text-secondary lh-lg mb-5"
+                  style={{ fontSize: "1.1rem" }}
+                >
+                  {product.description}
                 </p>
 
-                <h3 className="my-4">${product.price}</h3>
-                <p className="lead">{product.description}</p>
-
-                <button
-                  className="btn btn-outline-dark"
-                  onClick={() => handleAddToCart(product)}
-                >
-                  Add to Cart
-                </button>
-
-                <Link to="/cart" className="btn btn-dark mx-3">
-                  Go to Cart
-                </Link>
+                <div className="d-grid gap-3 d-md-flex">
+                  <button
+                    className="btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-sm d-flex align-items-center justify-content-center"
+                    onClick={() => handleAddToCart(product)}
+                  >
+                    <i
+                      className="fa fa-shopping-cart me-2"
+                      aria-hidden="true"
+                    ></i>{" "}
+                    Add to Cart
+                  </button>
+                  <Link
+                    to="/cart"
+                    className="btn btn-outline-dark btn-lg px-5 py-3 rounded-pill d-flex align-items-center justify-content-center"
+                  >
+                    Go to Cart <i className="fa fa-arrow-right ms-2"></i>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* Similar products */}
-        <div className="row my-5 py-5 d-none d-md-block">
-          <h2>You may also like</h2>
+        {/* Similar Products Section */}
+        <div className="mt-5 pt-5">
+          <div className="d-flex justify-content-between align-items-end mb-4">
+            <h2 className="fw-bold mb-0">You may also like</h2>
+            <Link
+              to="/products"
+              className="text-primary fw-bold text-decoration-none"
+            >
+              View all
+            </Link>
+          </div>
 
-          <Marquee pauseOnHover pauseOnClick speed={50}>
+          <Marquee pauseOnHover speed={40} gradient gradientWidth={50}>
             {loadingSimilar ? (
               <SimilarSkeleton />
             ) : (
               similarProducts?.content?.map((item) => (
-                <div key={item.id} className="card mx-4 text-center">
-                  <img
-                    className="card-img-top p-3"
-                    src={`${imageUrl}/${item.images?.[0]?.imageUrl}`}
-                    alt={item.name}
-                    height={300}
-                  />
-
-                  <div className="card-body">
-                    <h5 className="card-title">{item.name.slice(0, 20)}</h5>
+                <div
+                  key={item.id}
+                  className="card border-0 shadow-sm mx-3 rounded-4 overflow-hidden"
+                  style={{ width: "280px" }}
+                >
+                  <div className="position-relative">
+                    <img
+                      className="card-img-top p-4 object-fit-contain"
+                      src={item?.thumbnailUrl}
+                      alt={item.name}
+                      style={{
+                        height: "260px",
+                        transition: "transform 0.3s ease",
+                      }}
+                      onMouseOver={(e) =>
+                        (e.currentTarget.style.transform = "scale(1.05)")
+                      }
+                      onMouseOut={(e) =>
+                        (e.currentTarget.style.transform = "scale(1)")
+                      }
+                    />
+                    <span className="position-absolute top-0 end-0 bg-danger text-white px-3 py-1 m-3 rounded-pill small fw-bold">
+                      -20%
+                    </span>
                   </div>
 
-                  <ul className="list-group list-group-flush">
-                    <li className="list-group-item lead">${item.price}</li>
-                  </ul>
-
-                  <div className="card-body">
-                    <Link
-                      to={`/product?name=${encodeURIComponent(item.name)}`}
-                      className="btn btn-dark m-1"
-                    >
-                      View
-                    </Link>
-                    <button
-                      className="btn btn-outline-dark m-1"
-                      onClick={() => handleAddToCart(item)}
-                    >
-                      Add to Cart
-                    </button>
+                  <div className="card-body pt-0 px-4 pb-4">
+                    <h6 className="text-muted text-uppercase mb-1 small">
+                      {item.category}
+                    </h6>
+                    <h5 className="fw-bold mb-2 text-truncate">{item.name}</h5>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <span className="fw-bold fs-5">${item.price}</span>
+                      <button
+                        className="btn btn-sm btn-dark rounded-circle p-2"
+                        onClick={() => handleAddToCart(item)}
+                      >
+                        <i
+                          className="fa fa-shopping-cart me-2"
+                          aria-hidden="true"
+                        />
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))
@@ -141,7 +200,7 @@ const Product = () => {
           </Marquee>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -28,7 +28,7 @@ const CartItem = ({ item, imageUrl, onAdd, onRemove }) => (
       <div className="d-flex align-items-center justify-content-between flex-wrap flex-md-nowrap gap-3">
         <div className="flex-shrink-0">
           <img
-            src={`${imageUrl}/${item.images?.[0]?.imageUrl}`}
+            src={imageUrl}
             alt={item.name}
             className="rounded object-fit-cover"
             style={{ width: "90px", height: "90px" }}
@@ -80,7 +80,6 @@ const CartItem = ({ item, imageUrl, onAdd, onRemove }) => (
 );
 
 const Cart = () => {
-  const imageUrl = import.meta.env.VITE_URL_IMAGES;
   const cartItems = useSelector((state) => state.cartReducer);
   const dispatch = useDispatch();
 
@@ -141,7 +140,7 @@ const Cart = () => {
                     <CartItem
                       key={item.id}
                       item={item}
-                      imageUrl={imageUrl}
+                      imageUrl={item?.thumbnailUrl}
                       onAdd={handleAddItem}
                       onRemove={handleRemoveItem}
                     />

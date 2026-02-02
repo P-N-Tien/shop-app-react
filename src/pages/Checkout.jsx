@@ -99,7 +99,6 @@ const Checkout = () => {
           // 2. Remove cart
           dispatch(clearCard());
         } else {
-          console.log("data: ", data);
           window.open(data.paymentUrl, "_blank", "noopener,noreferrer");
         }
       },

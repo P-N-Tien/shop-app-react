@@ -57,7 +57,7 @@ const Products = () => {
                 >
                   <img
                     className="card-img-top w-100 h-100 object-fit-contain p-4 transition-transform"
-                    src={`${imageUrl}/${product.images[0]?.imageUrl}`}
+                    src={product?.thumbnailUrl}
                     alt={product.name}
                   />
                   <div className="card-overlay d-flex align-items-center justify-content-center">

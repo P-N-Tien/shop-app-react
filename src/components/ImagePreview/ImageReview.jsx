@@ -8,8 +8,8 @@ import "./style.css";
 
 export default function ProductGallery({ images }) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
-  const defaultIndex = images.findIndex((img) => img.isDefault === true);
-  // const sortedImages = images.sort((a, b) => a.sortOrder - b.sortOrder);
+  const defaultIndex = images.findIndex((img) => img.isPrimary === true);
+  const sortedImages = images.sort((a, b) => a.sortOrder - b.sortOrder);
 
   return (
     <div
@@ -28,10 +28,10 @@ export default function ProductGallery({ images }) {
         watchSlidesProgress
         className="thumbs-swiper"
       >
-        {images.map((img, idx) => (
+        {sortedImages.map((img, idx) => (
           <SwiperSlide key={idx}>
             <img
-              src={img}
+              src={img?.imageUrl}
               style={{
                 width: "100%",
                 cursor: "pointer",
@@ -49,10 +49,10 @@ export default function ProductGallery({ images }) {
         spaceBetween={10}
         className="main-swiper"
       >
-        {images.map((img, idx) => (
+        {sortedImages.map((img, idx) => (
           <SwiperSlide key={idx}>
             <img
-              src={img}
+              src={img?.imageUrl}
               style={{
                 width: "100%",
                 borderRadius: 8,

@@ -1,16 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import { getApi } from "../configs/api";
+import { getApi } from "@/configs/api";
 
 export const useProducts = (categoryId) => {
+  const url = !!categoryId
+    ? `/api/v1/products?categoryId=${categoryId}`
+    : "/api/v1/products";
+
   return useQuery({
-    queryKey: ["products"],
-    queryFn: () => {
-      const url = !!categoryId
-        ? `/api/v1/products?categoryId=${categoryId}`
-        : "/api/v1/products";
-      return getApi(url);
-    },
-    // enabled: !!categoryId,
+    queryKey: ["products", categoryId || "all"],
+    queryFn: () => getApi(url),
     staleTime: 5 * 60 * 1000,
   });
 };
