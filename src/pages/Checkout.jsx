@@ -21,7 +21,7 @@ const Checkout = () => {
   const isEmptyCart = !cartItems?.length;
 
   const [paymentMethod, setPaymentMethod] = useState(
-    localStorageUtils.getShippingInfo().paymentMethod
+    localStorageUtils.getShippingInfo()?.paymentMethod || "COD"
   );
   const { mutate: createOrder, isPending } = useCheckout();
 
