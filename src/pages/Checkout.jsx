@@ -75,7 +75,7 @@ const Checkout = () => {
       recipientPhone: formData.recipientPhone.trim(),
       recipientAddress: formData.recipientAddress.trim(),
       note: formData.note.trim(),
-      paymentMethod: formData.paymentMethod,
+      paymentMethod: paymentMethod,
       items: cartItems.map((item) => ({
         productId: item.id,
         quantity: item.qty,
