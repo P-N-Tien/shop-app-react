@@ -2,7 +2,7 @@
 
 Welcome to the React Shop App! This is a high-performance e-commerce storefront built with the latest React 19 and Vite, focusing on seamless user experience and secure payment integration.
 
-🔗 Live Demo: https://shop-app-react-rosy.vercel.app
+> 🔗 Live Demo: https://shop-app-react-rosy.vercel.app
 
 ## ✨ Features
 
@@ -39,15 +39,18 @@ Follow these steps to set up the project locally:
 
 1. Clone the repository:
 
-git clone git@github.com:P-N-Tien/shop-app-react.git
-cd shop-app-react
+> git clone git@github.com:P-N-Tien/shop-app-react.git
+> cd shop-app-react
 
 2. Install dependencies:
 
-npm install
+> npm install
 
 3. Run Development Server:
 
-npm run dev
+> npm run dev
 
 Open http://localhost:3000 in your browser.
+
+> [!NOTE]
+> Please wait a minute for the backend server to wake up/restart if the data doesn't load immediately (due to free hosting cold start).
