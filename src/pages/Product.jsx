@@ -76,12 +76,12 @@ const Product = () => {
                       </Link>
                     </li>
                     <li className="breadcrumb-item active text-primary">
-                      {product.category}
+                      {product.categoryName}
                     </li>
                   </ol>
                 </nav>
 
-                <h1 className="display-5 fw-bold mb-2 text-dark">
+                <h1 className="display-6 fw-bold mb-2 text-dark">
                   {product.name}
                 </h1>
 
@@ -96,10 +96,10 @@ const Product = () => {
 
                 <div className="d-flex align-items-baseline mb-4">
                   <h2 className="fw-bold text-primary mb-0">
-                    ${product.price}
+                    {product.price.toLocaleString()} VND
                   </h2>
                   <span className="text-decoration-line-through text-muted ms-3 fs-5">
-                    ${(product.price * 1.2).toFixed(2)}
+                    {(product.price * 1.2).toLocaleString()} VND
                   </span>
                 </div>
 
@@ -182,7 +182,9 @@ const Product = () => {
                     </h6>
                     <h5 className="fw-bold mb-2 text-truncate">{item.name}</h5>
                     <div className="d-flex justify-content-between align-items-center">
-                      <span className="fw-bold fs-5">${item.price}</span>
+                      <span className="fw-bold fs-5">
+                        {item.price.toLocaleString()} VND
+                      </span>
                       <button
                         className="btn btn-sm btn-dark rounded-circle p-2"
                         onClick={() => handleAddToCart(item)}

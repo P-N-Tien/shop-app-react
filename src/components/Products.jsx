@@ -8,7 +8,6 @@ import { useCategories } from "../hooks/useCategories";
 
 const Products = () => {
   const dispatch = useDispatch();
-  const imageUrl = import.meta.env.VITE_URL_IMAGES;
   const [selectedCategory, setSelectedCategory] = useState(0);
 
   const { data: products, isLoading } = useProducts(selectedCategory);
@@ -80,7 +79,7 @@ const Products = () => {
                       : product.name}
                   </h6>
                   <p className="card-text fw-light fs-5 text-dark mb-3">
-                    ${product.price.toLocaleString()}
+                    {product.price.toLocaleString()} VND
                   </p>
 
                   <div className="mt-auto">

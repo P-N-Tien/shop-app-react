@@ -71,7 +71,7 @@ const CartItem = ({ item, imageUrl, onAdd, onRemove }) => (
 
         <div className="text-end" style={{ minWidth: "120px" }}>
           <span className="text-dark fw-bold fs-5">
-            ${(item.qty * item.price).toLocaleString()}
+            {(item.qty * item.price).toLocaleString()} VND
           </span>
         </div>
       </div>
@@ -167,14 +167,14 @@ const Cart = () => {
                         Products ({totalItems})
                       </span>
                       <span className="fw-semibold text-dark">
-                        ${Math.round(subtotal).toLocaleString()}
+                        {Math.round(subtotal).toLocaleString()} VND
                       </span>
                     </div>
 
                     <div className="d-flex justify-content-between mb-3">
                       <span className="text-muted">Shipping fee</span>
                       <span className="text-success fw-medium">
-                        {SHIPPING_FEE === 0 ? "Free" : `$${SHIPPING_FEE}`}
+                        {SHIPPING_FEE === 0 ? "Free" : `${SHIPPING_FEE}`} VND
                       </span>
                     </div>
 
@@ -187,8 +187,8 @@ const Cart = () => {
                       <span className="h6 fw-bold mb-0">Total</span>
                       <div className="text-end">
                         <span className="h4 fw-bolder text-primary mb-0 d-block">
-                          $
-                          {Math.round(subtotal + SHIPPING_FEE).toLocaleString()}
+                          {Math.round(subtotal + SHIPPING_FEE).toLocaleString()}{" "}
+                          VND
                         </span>
                         <small
                           className="text-muted"

@@ -140,13 +140,13 @@ const Checkout = () => {
                 <div className="d-flex justify-content-between mb-2">
                   <span className="text-muted">Items ({totalItems})</span>
                   <span className="fw-semibold">
-                    ${Math.round(subtotal).toLocaleString()}
+                    {Math.round(subtotal).toLocaleString()} VND
                   </span>
                 </div>
                 <div className="d-flex justify-content-between mb-4">
                   <span className="text-muted">Shipping</span>
                   <span className="text-success fw-medium">
-                    ${isEmptyCart ? 0 : SHIPPING_FEE.toLocaleString()}
+                    {isEmptyCart ? 0 : SHIPPING_FEE.toLocaleString()} VND
                   </span>
                 </div>
 
@@ -155,7 +155,7 @@ const Checkout = () => {
                 <div className="d-flex justify-content-between align-items-center">
                   <span className="h6 fw-bold mb-0">Total</span>
                   <span className="h4 fw-bolder text-primary mb-0">
-                    ${isEmptyCart ? 0 : totalAmount.toLocaleString()}
+                    {isEmptyCart ? 0 : totalAmount.toLocaleString()} VND
                   </span>
                 </div>
               </div>
