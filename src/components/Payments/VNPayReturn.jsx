@@ -24,6 +24,9 @@ const VNPayReturn = () => {
         message: data.message,
       });
 
+      // Enable Order Button
+      localStorage.setItem("isProcessPayment", false);
+
       channel.postMessage({
         status: "SUCCESS",
         message: data?.message,

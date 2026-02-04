@@ -15,8 +15,6 @@ export const usePaymentListener = (channelName = "vnpay_payment_channel") => {
     channel.onmessage = (event) => {
       const { status, orderId } = event.data;
       if (status === "SUCCESS") {
-        // Enable Order Button
-        localStorage.setItem("isProcessPayment", false);
         dispatch(clearCard());
         const confirm = showSuccessAlert(
           "Payment Successful!",
