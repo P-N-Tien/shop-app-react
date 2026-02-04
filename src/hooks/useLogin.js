@@ -5,7 +5,9 @@ import axios from "axios";
 export const useLogin = () => {
   return useMutation({
     mutationFn: (payload) =>
-      axios.post(`${baseURL}/api/v1/auth/login`, payload),
+      axios.post(`${baseURL}/api/v1/auth/login`, payload, {
+        withCredentials: true,
+      }),
     onSuccess: () => {
       console.log("Login successful");
     },
