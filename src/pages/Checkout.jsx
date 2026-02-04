@@ -10,19 +10,27 @@ import { clearCard } from "../redux/action";
 import { localStorageUtils } from "../utils/localStorageUtils";
 import { usePaymentListener } from "../hooks/usePaymentListener";
 import { useNavigate } from "react-router-dom";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 const Checkout = () => {
   const SHIPPING_FEE = 30000;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  usePaymentListener();
   const cartItems = useSelector((state) => state.cartReducer);
   const isEmptyCart = !cartItems?.length;
 
   const [paymentMethod, setPaymentMethod] = useState(
     localStorageUtils.getShippingInfo()?.paymentMethod || "COD"
   );
+
+  const [isProcessPayment, setIsProcessPayment] = useLocalStorage(
+    "isProcessPayment",
+    false
+  );
+
+  usePaymentListener();
+
   const { mutate: createOrder, isPending } = useCheckout();
 
   const [formData, setFormData] = useState(() => {
@@ -69,6 +77,9 @@ const Checkout = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Disable Order Button
+    setIsProcessPayment(true);
+
     // Build Object Checkout
     const payload = {
       recipientName: formData.recipientName.trim(),
@@ -87,7 +98,6 @@ const Checkout = () => {
       onSuccess: (data) => {
         if (paymentMethod === "COD") {
           // 1. Popup notify
-
           showSuccessAlert(
             "Order Placed!",
             "Thank you for your purchase. Your order is being processed.",
@@ -96,9 +106,13 @@ const Checkout = () => {
             navigate("/");
           });
 
+          // Enable the Order Button
+          setIsProcessPayment(false);
+
           // 2. Remove cart
           dispatch(clearCard());
         } else {
+          // Open new tab to process payment
           window.open(data.paymentUrl, "_blank", "noopener,noreferrer");
         }
       },
@@ -306,10 +320,10 @@ const Checkout = () => {
                       paymentMethod === "COD" ? "btn-dark" : "btn-primary"
                     }`}
                     type="submit"
-                    disabled={isPending || isEmptyCart}
+                    disabled={isPending || isEmptyCart || isProcessPayment}
                     style={{ borderRadius: "12px", minHeight: "62px" }} // Giữ chiều cao cố định để không bị giật khi hiện loading
                   >
-                    {isPending ? (
+                    {isPending || isProcessPayment ? (
                       <>
                         <span
                           className="spinner-border spinner-border-sm"

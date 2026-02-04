@@ -14,7 +14,7 @@ const VNPayReturn = () => {
   });
 
   const [result, setResult] = useState({ status: "processing", message: "" });
-  console.log("data", data);
+
   useEffect(() => {
     if (data && data.paymentStatus !== "PENDING") {
       const channel = new BroadcastChannel("vnpay_payment_channel");

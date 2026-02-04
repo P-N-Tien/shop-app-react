@@ -29,3 +29,14 @@ export const localStorageUtils = {
     localStorage.removeItem(STORAGE_KEY);
   },
 };
+
+const getLocalStorage = (key, defaultValue = null) => {
+  try {
+    const item = window.localStorage.getItem(key);
+    // If there is data, parse the JSON; otherwise, return the defaul value
+    return item ? JSON.parse(item) : defaultValue;
+  } catch (error) {
+    console.warn(`Error when get "${key}" from LocalStorage:`, error);
+    return defaultValue;
+  }
+};

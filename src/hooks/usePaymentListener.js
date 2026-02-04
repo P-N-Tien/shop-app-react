@@ -7,14 +7,17 @@ import { clearCard } from "@/redux/action";
 export const usePaymentListener = (channelName = "vnpay_payment_channel") => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   useEffect(() => {
     // Initial Broadcast Channel
     const channel = new BroadcastChannel(channelName);
 
     channel.onmessage = (event) => {
       const { status, orderId } = event.data;
-      dispatch(clearCard());
       if (status === "SUCCESS") {
+        // Enable Order Button
+        localStorage.setItem("isProcessPayment", false);
+        dispatch(clearCard());
         showSuccessAlert(
           "Payment Successful!",
           "We have received your payment. Your order is being processed.",
