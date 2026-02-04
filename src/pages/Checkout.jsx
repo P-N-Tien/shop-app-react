@@ -77,9 +77,6 @@ const Checkout = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Disable Order Button
-    setIsProcessPayment(true);
-
     // Build Object Checkout
     const payload = {
       recipientName: formData.recipientName.trim(),
@@ -95,24 +92,24 @@ const Checkout = () => {
 
     // Create Order
     createOrder(payload, {
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         if (paymentMethod === "COD") {
-          // 1. Popup notify
-          showSuccessAlert(
+          // Remove cart
+          dispatch(clearCard());
+
+          // Popup notify
+          const confirm = await showSuccessAlert(
             "Order Placed!",
             "Thank you for your purchase. Your order is being processed.",
             "Go to Home"
-          ).then(() => {
+          );
+
+          if (confirm.isComfirm) {
             navigate("/");
-          });
-
-          // Enable the Order Button
-          setIsProcessPayment(false);
-
-          // 2. Remove cart
-          dispatch(clearCard());
+          }
         } else {
-          // Open new tab to process payment
+          // Disable the Order Button
+          setIsProcessPayment(true);
           window.open(data.paymentUrl, "_blank", "noopener,noreferrer");
         }
       },
