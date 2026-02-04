@@ -18,13 +18,14 @@ export const usePaymentListener = (channelName = "vnpay_payment_channel") => {
         // Enable Order Button
         localStorage.setItem("isProcessPayment", false);
         dispatch(clearCard());
-        showSuccessAlert(
+        const confirm = showSuccessAlert(
           "Payment Successful!",
           "We have received your payment. Your order is being processed.",
           "Go to Home"
-        ).then(() => {
+        );
+        if (confirm.isConfirmed) {
           navigate("/");
-        });
+        }
       } else if (status === "FAILED") {
         console.error("Payment failed for order:", orderId);
       }

@@ -32,7 +32,6 @@ apiClient.interceptors.response.use(
         return apiClient(originalRequest);
       } catch (refreshError) {
         console.error("Session expired, please login again.");
-        // window.location.href = "/login";
         return Promise.reject(refreshError);
       }
     }

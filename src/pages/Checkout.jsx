@@ -103,8 +103,7 @@ const Checkout = () => {
             "Thank you for your purchase. Your order is being processed.",
             "Go to Home"
           );
-
-          if (confirm.isComfirm) {
+          if (confirm.isConfirmed) {
             navigate("/");
           }
         } else {
