@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Navbar } from "../components";
 import { useLogin } from "../hooks/useLogin";
 import { useDispatch } from "react-redux";
@@ -8,25 +8,27 @@ import { loginSuccess } from "../redux/action";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
-  const { mutate, isPending, error } = useLogin();
+  const { mutate: handleLoginAsync, isPending, error } = useLogin();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Test data: 0909876543, 123456
 
-    console.log(e.target.phoneNumber.value);
     const payload = {
       phoneNumber: e.target.phoneNumber.value,
       password: e.target.password.value,
     };
 
-    mutate(payload, {
+    handleLoginAsync(payload, {
       onSuccess: () => {
         dispatch(loginSuccess());
-        // Navigate to Home Page
-        navigate("/");
+        // Check user has been redirected from previous page
+        const origin = location.state?.redirectTo || "/";
+        // If that is checkout page and back it, if not back to home page
+        navigate(origin);
       },
     });
   };
@@ -78,12 +80,12 @@ const Login = () => {
                         <label className="form-label small fw-bold text-muted">
                           PASSWORD
                         </label>
-                        <Link
+                        {/* <Link
                           to="/forgot"
                           className="small text-decoration-none fw-medium text-primary"
                         >
                           Forgot?
-                        </Link>
+                        </Link> */}
                       </div>
                       <div className="input-group">
                         <span className="input-group-text bg-white border-end-0 text-muted">

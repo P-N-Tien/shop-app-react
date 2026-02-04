@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+import "./CustomSweetalert.css";
 
 const Toast = Swal.mixin({
   customClass: {
@@ -49,15 +50,21 @@ export const showToast = (icon, title) => {
 
 export const confirmDialog = async (title, text, icon = "question") => {
   const result = await Swal.fire({
-    title: title,
-    text: text,
+    title: `<span style="font-family: 'Inter', sans-serif; font-weight: 600;">${title}</span>`,
+    html: `<span style="font-family: 'Inter', sans-serif; color: #666;">${text}</span>`,
     icon: icon,
+    iconColor: "#000",
     showCancelButton: true,
-    confirmButtonColor: "#000",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Confirm",
-    cancelButtonText: "Cancel",
+    confirmButtonText: "Login Now",
+    cancelButtonText: "Maybe Later",
     reverseButtons: true,
+    focusCancel: true,
+    borderRadius: "12px",
+    customClass: {
+      confirmButton: "swal-confirm-btn",
+      cancelButton: "swal-cancel-btn",
+    },
+    buttonsStyling: false,
   });
 
   return result.isConfirmed;

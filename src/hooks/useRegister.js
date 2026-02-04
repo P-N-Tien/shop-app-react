@@ -9,6 +9,8 @@ export const useRegister = () => {
     onSuccess: () => {
       console.log("Register successful:");
     },
-    onError: (error) => {},
+    onError: (error) => {
+      console.error("Error: ", error);
+    },
   });
 };

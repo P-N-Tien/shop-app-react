@@ -1,9 +1,11 @@
-import apiClient from "@/configs/api";
+import { baseURL } from "@/configs/api";
 import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
 export const useLogin = () => {
   return useMutation({
-    mutationFn: (payload) => apiClient.post(`/api/v1/auth/login`, payload),
+    mutationFn: (payload) =>
+      axios.post(`${baseURL}/api/v1/auth/login`, payload),
     onSuccess: () => {
       console.log("Login successful");
     },

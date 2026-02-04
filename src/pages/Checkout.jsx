@@ -12,7 +12,7 @@ import { usePaymentListener } from "../hooks/usePaymentListener";
 import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
-  const SHIPPING_FEE = 30;
+  const SHIPPING_FEE = 30000;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -61,7 +61,7 @@ const Checkout = () => {
     return {
       subtotal,
       totalItems,
-      totalAmount: Math.round(subtotal + SHIPPING_FEE),
+      totalAmount: Math.round(subtotal + SHIPPING_FEE).toLocaleString(),
     };
   }, [cartItems]);
 

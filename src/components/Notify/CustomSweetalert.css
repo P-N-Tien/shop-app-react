@@ -1,0 +1,29 @@
+.swal-confirm-btn {
+    background-color: #007bff !important; 
+    color: white !important;
+    border: none !important;
+    padding: 10px 20px !important;
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+    margin-left: 10px; 
+    cursor: pointer;
+  }
+  
+  .swal-cancel-btn {
+    background-color: transparent !important; 
+    color: #000 !important;
+    border: none !important;
+    padding: 10px 20px !important;
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+    cursor: pointer;
+  }
+  
+  .swal-confirm-btn:hover {
+      opacity: 0.9;
+  }
+  
+  .swal-cancel-btn:hover {
+      opacity: 0.6;
+  }
+  

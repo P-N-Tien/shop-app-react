@@ -1,10 +1,12 @@
 import React, { useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Navbar } from "../components";
 import { addCart, delCart } from "../redux/action";
+import { Button } from "react-bootstrap";
+import { confirmDialog } from "@/components/Notify/Notifications";
 
-const SHIPPING_FEE = 30;
+const SHIPPING_FEE = 30000;
 
 const EmptyCart = () => (
   <div className="container">
@@ -81,7 +83,9 @@ const CartItem = ({ item, imageUrl, onAdd, onRemove }) => (
 
 const Cart = () => {
   const cartItems = useSelector((state) => state.cartReducer);
+  const isLoggedIn = useSelector((state) => state.userReducer.isLoggedIn);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { subtotal, totalItems } = useMemo(() => {
     return cartItems.reduce(
@@ -96,6 +100,21 @@ const Cart = () => {
 
   const handleAddItem = (item) => dispatch(addCart(item));
   const handleRemoveItem = (item) => dispatch(delCart(item));
+
+  const handleGoToCheckout = async () => {
+    if (!isLoggedIn) {
+      const isConfirmed = await confirmDialog(
+        "Login Required",
+        "Please login to proceed with your checkout.",
+        "info"
+      );
+      if (isConfirmed) {
+        navigate("/login", { state: { redirectTo: "/checkout" } });
+      }
+    } else {
+      navigate("/checkout");
+    }
+  };
 
   if (!cartItems.length) {
     return (
@@ -174,7 +193,10 @@ const Cart = () => {
                     <div className="d-flex justify-content-between mb-3">
                       <span className="text-muted">Shipping fee</span>
                       <span className="text-success fw-medium">
-                        {SHIPPING_FEE === 0 ? "Free" : `${SHIPPING_FEE}`} VND
+                        {SHIPPING_FEE === 0
+                          ? "Free"
+                          : `${SHIPPING_FEE.toLocaleString()}`}{" "}
+                        VND
                       </span>
                     </div>
 
@@ -199,14 +221,14 @@ const Cart = () => {
                       </div>
                     </div>
 
-                    <Link
-                      to="/checkout"
+                    <Button
+                      onClick={handleGoToCheckout}
                       className="btn btn-dark btn-lg w-100 py-3 shadow-sm d-flex align-items-center justify-content-center gap-2"
                       style={{ borderRadius: "12px", transition: "all 0.3s" }}
                     >
                       <span className="fw-bold mr-2">Checkout</span>
                       <i className="fa fa-arrow-right small" />
-                    </Link>
+                    </Button>
 
                     <div className="mt-4 p-3 bg-light rounded-3">
                       <p className="small text-muted mb-0 text-center">
